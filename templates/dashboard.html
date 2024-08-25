@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-100 text-gray-900 flex">
+   <!-- Sidebar -->
+   <div class="bg-indigo-600 text-white w-64 min-h-screen flex flex-col justify-center items-center">
+    <!-- Profile Section -->
+    <div class="flex flex-col items-center">
+        <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="w-20 h-20 rounded-full object-cover">
+        <h3 class="mt-2 text-lg font-medium">{{ user.username }}</h3>
+        <a href="/update-profile/" class="mt-2 text-indigo-100 hover:text-white hover:bg-indigo-700 px-4 py-2 rounded-md shadow">
+            Update Profile
+        </a>
+    </div>
+    <!-- Motivational Quote -->
+    <div class="mt-10 p-4 bg-indigo-700 rounded-md shadow-md text-center">
+        <p class="text-sm">"The journey of a thousand miles begins with one step."</p>
+        <p class="mt-2 text-sm font-medium">- Lao Tzu</p>
+    </div>
+</div>
+
+
+    <!-- Main Content -->
+    <div class="flex-1 p-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-semibold">Welcome, {{ user.first_name }} {{ user.last_name }}</h2>
+            <a href='/logout/' class="bg-indigo-600 text-white px-4 py-2 rounded-md shadow hover:bg-indigo-700">
+                Log Out
+            </a>
+        </div>
+
+        <!-- User Information and Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- User Info Card -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-medium text-gray-900">Your Information</h3>
+                <div class="mt-4">
+                    <p><strong>Height:</strong> {{ height }} cm</p>
+            <p><strong>Weight:</strong> {{ weight }} kg</p>
+            <p><strong>Age:</strong> {{ age }}</p>
+            <p><strong>Weight Goal:</strong> {{ weight_goal }} kg</p>
+                </div>
+                <div class="mt-4">
+                    <a href="/update-profile/" class="text-indigo-600 hover:text-indigo-900">Edit Information</a>
+                </div>
+            </div>
+
+            <!-- BMI and Recommended Calories Card -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-medium text-gray-900">Health Status</h3>
+                <div class="mt-4">
+                    <p><strong>Your BMI:</strong> {{ bmi}}</p>
+                    <p><strong>Your BMR:</strong> {{ bmr}} kcal/day</p>
+                    <p><strong>Status:</strong> {{health_status}} | {{overweight_amount}}Kg</p>
+                    <p><strong>Days to reach Goal :</strong> {{days_to_reach_goal}} Days</p>
+                </div>
+                <div class="mt-4">
+                    <h4 class="text-lg font-medium text-gray-900">Recommended Calorie Intake:</h4>
+                    <p><strong>{{calories_intake}} kcal/day </strong></p>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <!-- Food Diary Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-medium text-gray-900">Log Today's Food</h3>
+                <form method="POST" action="{% url 'log_food' %}" class="mt-4 space-y-4">
+                    {% csrf_token %}
+                    <div>
+                        <label for="food_name" class="block text-sm font-medium text-gray-700">Food Item</label>
+                        <input id="food_name" name="food_name" type="text" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="calories" class="block text-sm font-medium text-gray-700">Calories</label>
+                        <input id="calories" name="calories" type="number" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Add to Diary
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-medium text-gray-900">Today's Logged Food</h3>
+                <ul class="mt-4 space-y-4">
+                    {% for log in today_logs %}
+                    <li class="flex justify-between">
+                        <span>{{ log.food_name }}</span>
+                        <span>{{ log.calories }} kcal</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="mt-4 flex justify-between items-center">
+                    <h4 class="text-lg font-medium text-gray-900">Total: {{ total_calories }} kcal</h4>
+                    
+                </div>
+            </div>
+            
+        </div>
+
+        
+    </div>
+</body>
+</html>

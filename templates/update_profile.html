@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="mt-8 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center">
+    <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+        <div class="text-center">
+            <svg class="w-16 h-16 mx-auto mb-4 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12h-8m-6 0H4m8-8v16m6.364-13.636A9 9 0 119.636 19.636M8 10v4m4-4v4m4-4v4M5 5l14 14" />
+            </svg>
+            <h2 class="mt-2 text-3xl font-extrabold text-gray-900">Update your profile</h2>
+        </div>
+        <form class="mt-8 space-y-6" action="/update-profile/" method="POST" enctype="multipart/form-data">{% csrf_token %}
+            <div class="rounded-md shadow-sm space-y-4">
+                <div>
+                    <label for="first_name" class="sr-only">First Name</label>
+                    <input id="first_name" name="first_name" type="text" value="{{ user.first_name }}" required class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="First Name">
+                </div>
+                <div>
+                    <label for="last_name" class="sr-only">Last Name</label>
+                    <input id="last_name" name="last_name" type="text" value="{{ user.last_name }}" required class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Last Name">
+                </div>
+                <div>
+                    <label for="email" class="sr-only">Email address</label>
+                    <input id="email" name="email" type="email" value="{{ user.email }}" autocomplete="email" required class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email address">
+                </div>
+                <div>
+                    <label for="profile_picture" class="block text-sm font-medium text-gray-700">Profile Picture</label>
+                    <input id="profile_picture" name="profile_picture" type="file" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                </div>
+
+                <!-- Gender -->
+                <div>
+                    <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
+                    <select id="gender" name="gender" required class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="male" {% if user.gender == 'male' %}selected{% endif %}>Male</option>
+                        <option value="female" {% if user.gender == 'female' %}selected{% endif %}>Female</option>
+                    </select>
+                </div>
+
+                <!-- Height -->
+                <div>
+                    <label for="height" class="sr-only">Height (cm)</label>
+                    <input id="height" name="height" type="number" value="{{ user.height }}" required class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Height (cm)">
+                </div>
+
+                <!-- Weight -->
+                <div>
+                    <label for="weight" class="sr-only">Weight (kg)</label>
+                    <input id="weight" name="weight" type="number" value="{{ user.weight }}" required class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Weight (kg)">
+                </div>
+
+                <!-- Age -->
+                <div>
+                    <label for="age" class="sr-only">Age</label>
+                    <input id="age" name="age" type="number" value="{{ user.age }}" required class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Age">
+                </div>
+
+                <!-- Weight Goal -->
+                <div>
+                    <label for="weight_goal" class="sr-only">Weight Goal (kg)</label>
+                    <input id="weight_goal" name="weight_goal" type="number" value="{{ user.weight_goal }}" required class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Weight Goal (kg)">
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Update Profile
+                </button>
+            </div>
+        </form>
+        <p class="mt-2 text-center text-sm text-gray-600">
+            Want to logout? 
+            <a href="{% url 'logout' %}" class="font-medium text-indigo-600 hover:text-indigo-500"> Logout </a>
+        </p>
+    </div>
+</body>
+</html>
